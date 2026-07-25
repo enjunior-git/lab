@@ -1,0 +1,9 @@
+#!/bin/bash
+
+echo "External command"
+filename=$(echo "document.txt" | sed 's/.txt//')
+echo "$filename"
+
+echo "Parameter expansion (built-in, faster)"
+filename="document.txt"
+echo "${filename%.txt}"
