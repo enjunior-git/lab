@@ -3,5 +3,5 @@
     "context": "..",
     "dockerfile": "Dockerfile",
   },
-  "postCreateCommand": "./setup",
+  "postCreateCommand": "./.devcontainer/setup",
 }
