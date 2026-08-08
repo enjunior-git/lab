@@ -3,5 +3,8 @@
     "context": "..",
     "dockerfile": "Dockerfile",
   },
+  "remoteEnv": {
+    "TERM": "xterm-256color",
+  },
   "postCreateCommand": "./.devcontainer/setup",
 }
