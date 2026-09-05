@@ -1,0 +1,18 @@
+{
+  "build": {
+    "context": "..",
+    "dockerfile": "Dockerfile"
+  },
+  "runArgs": [
+    "--hostname",
+    "lab"
+  ],
+  "containerEnv": {
+    "PATH": "/workspaces/lab/scripts:${containerEnv:PATH}",
+    "TZ": "America/Montreal"
+  },
+  "postCreateCommand": "./.devcontainer/setup",
+  "forwardPorts": [
+    3010
+  ]
+}
