@@ -16,3 +16,10 @@ data:
   WEBHOOK_URL: https://n8n.enjunior.ca/
   NODE_ENV: production
   N8N_RESTRICT_FILE_ACCESS_TO: /files
+  DB_TYPE: postgresdb
+  DB_POSTGRESDB_HOST: "enjunior-psql-n8n-mercury.postgres.database.azure.com"
+  DB_POSTGRESDB_PORT: "5432"
+  DB_POSTGRESDB_DATABASE: "n8n"
+  # For learning purposes only!
+  DB_POSTGRESDB_USER: "n8nadmin"
+  DB_POSTGRESDB_PASSWORD: "n8n-password-123"
