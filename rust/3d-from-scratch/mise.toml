@@ -1,0 +1,10 @@
+[tools]
+rust = "nightly"
+
+[tasks.dev]
+run = "cargo run src/main.rs"
+alias = "d"
+
+[tasks.build]
+run = "cargo build"
+alias = "b"
