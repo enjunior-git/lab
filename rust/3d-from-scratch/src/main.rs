@@ -1,3 +1,5 @@
+mod obj;
+
 use minifb::{Key, ScaleMode, Window, WindowOptions};
 
 const WIDTH: usize = 800;
@@ -8,7 +10,11 @@ const FOREGROUND: u32 = 0x101010;
 
 const FPS: u32 = 60;
 
+const MODEL: &str = include_str!("./sap_avali.obj");
+
 fn main() {
+    let model = obj::parse(&MODEL);
+
     let mut window = Window::new(
         "3D from Scratch",
         WIDTH,
@@ -22,50 +28,23 @@ fn main() {
     .unwrap();
     let mut buffer = vec![0u32; WIDTH * HEIGHT];
 
-    let vertices = vec![
-        Point3D {
-            x: 0.25,
-            y: 0.25,
-            z: 0.25,
-        },
-        Point3D {
-            x: -0.25,
-            y: 0.25,
-            z: 0.25,
-        },
-        Point3D {
-            x: -0.25,
-            y: -0.25,
-            z: 0.25,
-        },
-        Point3D {
-            x: 0.25,
-            y: -0.25,
-            z: 0.25,
-        },
-        Point3D {
-            x: 0.25,
-            y: 0.25,
-            z: -0.25,
-        },
-        Point3D {
-            x: -0.25,
-            y: 0.25,
-            z: -0.25,
-        },
-        Point3D {
-            x: -0.25,
-            y: -0.25,
-            z: -0.25,
-        },
-        Point3D {
-            x: 0.25,
-            y: -0.25,
-            z: -0.25,
-        },
-    ];
+    let vertices: Vec<Point3D> = model
+        .vertices
+        .iter()
+        .map(|v| Point3D {
+            x: v.x,
+            y: v.y,
+            z: v.z,
+        })
+        .collect();
 
-    let faces = vec![
+    let faces: Vec<Vec<usize>> = model
+        .faces
+        .iter()
+        .map(|f| f.vertex_indexes.clone())
+        .collect();
+
+    let facesa = vec![
         vec![0, 1, 2, 3],
         vec![4, 5, 6, 7],
         vec![0, 4],
@@ -74,7 +53,11 @@ fn main() {
         vec![3, 7],
     ];
 
-    let mut dz = 1.0;
+    let delta_position = Point3D {
+        x: 0.0,
+        y: -0.6,
+        z: 1.0,
+    };
     let mut angle = 0.0;
 
     while window.is_open() && !window.is_key_down(Key::Escape) {
@@ -84,21 +67,14 @@ fn main() {
 
         clear(&mut buffer);
 
-        // for vertex in &vertices {
-        //     point(
-        //         &screen(project(&translate_z(&rotate_xz(&vertex, angle), dz))),
-        //         &mut buffer,
-        //     );
-        // }
-
         for f in &faces {
             for i in 0..f.len() {
                 let a = &vertices[f[i]];
                 let b = &vertices[f[(i + 1) % f.len()]];
 
                 line(
-                    &screen(project(&translate_z(&rotate_xz(&a, angle), dz))),
-                    &screen(project(&translate_z(&rotate_xz(&b, angle), dz))),
+                    &screen(project(&translate(&rotate_xz(&a, angle), &delta_position))),
+                    &screen(project(&translate(&rotate_xz(&b, angle), &delta_position))),
                     &mut buffer,
                 );
             }
@@ -177,11 +153,11 @@ fn project(point: &Point3D) -> Point {
     }
 }
 
-fn translate_z(point: &Point3D, dz: f32) -> Point3D {
+fn translate(point: &Point3D, delta: &Point3D) -> Point3D {
     Point3D {
-        x: point.x,
-        y: point.y,
-        z: point.z + dz,
+        x: point.x + delta.x,
+        y: point.y + delta.y,
+        z: point.z + delta.z,
     }
 }
 

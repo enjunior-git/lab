@@ -8,3 +8,7 @@ alias = "d"
 [tasks.build]
 run = "cargo build"
 alias = "b"
+
+[tasks.test]
+run = "cargo test"
+alias = "t"
