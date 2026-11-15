@@ -2,7 +2,7 @@
 rust = "nightly"
 
 [tasks.dev]
-run = "cargo run src/main.rs"
+run = "set RUST_BACKTRACE=1 && cargo run src/main.rs"
 alias = "d"
 
 [tasks.build]
